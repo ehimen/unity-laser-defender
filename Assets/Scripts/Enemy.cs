@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour {
 
     public float aggressiveness = 0.1f;
 
+    public int prize = 1;
+
     private int currentHealth;
 
     private float lastFired = 0f;
@@ -30,6 +32,7 @@ public class Enemy : MonoBehaviour {
             currentHealth -= projectile.GetDamage();
 
             if (currentHealth <= 0) {
+                GetScoreKeeper().Score(prize);
                 Destroy(gameObject);
             }
 
@@ -64,6 +67,11 @@ public class Enemy : MonoBehaviour {
         if (fired) {
             lastFired = Time.time;
         }
+    }
+
+    ScoreKeeper GetScoreKeeper()
+    {
+        return GameObject.Find("Score").GetComponent<ScoreKeeper>();
     }
 
 }
