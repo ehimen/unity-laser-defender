@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
     public float speed = 5f;
     public float projectileSpeed = 10f;
     public float projectileCooldown = 1f;   // How many seconds between shots?
+    public int health = 3;
 
     public GameObject projectilePrefab;
 
@@ -14,6 +14,21 @@ public class PlayerController : MonoBehaviour {
     private Vector3 size;
 
     private float lastFired = 0f;
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        Projectile projectile = collider.GetComponent<Projectile>();
+
+        if (projectile && projectile.IsOriginEnemy()) {
+            health -= projectile.damage;
+
+            if (health <= 0) {
+                Destroy(gameObject);
+            }
+
+            projectile.Hit();
+        }
+    }
 
     void Start()
     {
@@ -36,17 +51,17 @@ public class PlayerController : MonoBehaviour {
 
     void Fire()
     {
-        if ((lastFired > 0) && ((Time.time - lastFired) <= projectileCooldown)) {
-            return;
+        bool fired = ProjectileFactory.CreateProjectile(
+            transform.position + (Vector3.up * size.y * 0.5f),
+            Vector3.up * projectileSpeed,
+            projectilePrefab,
+            lastFired,
+            projectileCooldown
+        );
+
+        if (fired) {
+            lastFired = Time.time;
         }
-
-        GameObject projectile = Instantiate(projectilePrefab, Vector3.zero, Quaternion.identity) as GameObject;
-        // Put the laser at the top of the ship.
-        projectile.transform.position = transform.position + (Vector3.up * size.x * 0.5f);
-
-        projectile.GetComponent<Rigidbody2D>().velocity = Vector3.up * projectileSpeed;
-
-        lastFired = Time.time;
     }
 
 
