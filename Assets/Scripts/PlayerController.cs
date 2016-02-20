@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
     {
         Projectile projectile = collider.GetComponent<Projectile>();
 
-        if (projectile && projectile.IsOriginEnemy()) {
+        if (projectile) {
             health -= projectile.damage;
 
             if (health <= 0) {

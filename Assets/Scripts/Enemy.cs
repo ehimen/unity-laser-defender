@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour {
     {
         Projectile projectile = collider.gameObject.GetComponent<Projectile>();
 
-        if (projectile && projectile.IsOriginPlayer()) {
+        if (projectile) {
 
             currentHealth -= projectile.GetDamage();
 
