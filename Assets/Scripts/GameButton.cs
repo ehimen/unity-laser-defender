@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 abstract public class GameButton : MonoBehaviour {
 
@@ -10,10 +9,16 @@ abstract public class GameButton : MonoBehaviour {
         Vector3 mouse = Input.mousePosition;
 
         RectTransform rect = gameObject.GetComponent<RectTransform>();
-        
-        if (rect && Input.GetMouseButton(0) && RectTransformUtility.RectangleContainsScreenPoint(rect, new Vector2(mouse.x, mouse.y))) {
-            DoMouseDown();
+
+        if (rect) {
+            foreach (Touch touch in Input.touches) {
+                if (RectTransformUtility.RectangleContainsScreenPoint(rect, touch.position)) {
+                    DoMouseDown();
+                    break;
+                }
+            }
         }
+        
 	}
 
     abstract protected void DoMouseDown();

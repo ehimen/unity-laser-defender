@@ -17,9 +17,6 @@ public class PlayerController : MonoBehaviour {
 
     private float lastFired = 0f;
 
-    private bool movingLeft = false;
-    private bool movingRight = false;
-
     void OnTriggerEnter2D(Collider2D collider)
     {
         Projectile projectile = collider.GetComponent<Projectile>();
@@ -43,9 +40,9 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update ()
     {
-	    if (Input.GetKey(KeyCode.LeftArrow) || movingLeft) {
+	    if (Input.GetKey(KeyCode.LeftArrow)) {
             MoveLeft();
-        } else if (Input.GetKey(KeyCode.RightArrow) || movingRight) {
+        } else if (Input.GetKey(KeyCode.RightArrow)) {
             MoveRight();
         }
 
@@ -67,26 +64,6 @@ public class PlayerController : MonoBehaviour {
         if (fired) {
             lastFired = Time.time;
         }
-    }
-
-    public void StartMoveLeft()
-    {
-        movingLeft = true;
-    }
-
-    public void StopMoveLeft()
-    {
-        movingLeft = false;
-    }
-
-    public void StartMoveRight()
-    {
-        movingRight = true;
-    }
-
-    public void StopMoveRight()
-    {
-        movingRight = false;
     }
 
     public void MoveRight()
