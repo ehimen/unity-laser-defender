@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour {
     public float projectileSpeed = 10f;
     public float projectileCooldown = 1f;   // How many seconds between shots?
     public int health = 3;
+    public AudioClip deathSound;
+    public LevelManager levelManager;
 
     public GameObject projectilePrefab;
 
@@ -23,7 +25,7 @@ public class PlayerController : MonoBehaviour {
             health -= projectile.damage;
 
             if (health <= 0) {
-                Destroy(gameObject);
+                Die();
             }
 
             projectile.Hit();
@@ -78,6 +80,19 @@ public class PlayerController : MonoBehaviour {
     void UpdateShipPosition(float shift)
     {
         transformer.MoveInXRelativeToTime(shift);
+    }
+
+    void Die()
+    {
+        AudioSource.PlayClipAtPoint(deathSound, transform.position);
+        GetComponent<SpriteRenderer>().enabled = false;
+        Invoke("Finish", 1.0f);
+    }
+
+    void Finish()
+    {
+        Destroy(gameObject);
+        levelManager.LoadLevel("Win Screen");
     }
 
 }
