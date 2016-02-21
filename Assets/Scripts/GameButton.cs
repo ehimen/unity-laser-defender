@@ -6,8 +6,6 @@ abstract public class GameButton : MonoBehaviour {
 	
 	void Update ()
     {
-        Vector3 mouse = Input.mousePosition;
-
         RectTransform rect = gameObject.GetComponent<RectTransform>();
 
         if (rect) {
