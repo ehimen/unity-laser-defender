@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour {
 
     private float lastFired = 0f;
 
+    private bool movingLeft = false;
+    private bool movingRight = false;
+
     void OnTriggerEnter2D(Collider2D collider)
     {
         Projectile projectile = collider.GetComponent<Projectile>();
@@ -40,9 +43,9 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update ()
     {
-	    if (Input.GetKey(KeyCode.LeftArrow)) {
+	    if (Input.GetKey(KeyCode.LeftArrow) || movingLeft) {
             MoveLeft();
-        } else if (Input.GetKey(KeyCode.RightArrow)) {
+        } else if (Input.GetKey(KeyCode.RightArrow) || movingRight) {
             MoveRight();
         }
 
@@ -51,7 +54,7 @@ public class PlayerController : MonoBehaviour {
         }
 	}
 
-    void Fire()
+    public void Fire()
     {
         bool fired = ProjectileFactory.CreateProjectile(
             transform.position + (Vector3.up * size.y * 0.5f),
@@ -66,13 +69,32 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    public void StartMoveLeft()
+    {
+        movingLeft = true;
+    }
 
-    void MoveRight()
+    public void StopMoveLeft()
+    {
+        movingLeft = false;
+    }
+
+    public void StartMoveRight()
+    {
+        movingRight = true;
+    }
+
+    public void StopMoveRight()
+    {
+        movingRight = false;
+    }
+
+    public void MoveRight()
     {
         UpdateShipPosition(speed);
     }
 
-    void MoveLeft()
+    public void MoveLeft()
     {
         UpdateShipPosition(-1 * speed);
     }
